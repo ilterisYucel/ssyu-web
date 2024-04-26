@@ -11,22 +11,22 @@ import PageContentGrid from "../../modules/PageContentGrid/index.js";
 import { PageToolbar } from "../../modules/index.js";
 
 const MembershipsPage = () => {
-  const [membershipsState, setMembershipsState] = useState([]);
-  const { setMemberships, memberships } = useContext(MembershipContext);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const getCustomers = async () => {
-      try {
-        const response = await client.get("memberships");
-        setMembershipsState(response.data);
-        setMemberships(response.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    getCustomers();
-  }, []);
+  // const [membershipsState, setMembershipsState] = useState([]);
+  const { memberships } = useContext(MembershipContext);
+  // const [error, setError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   const getCustomers = async () => {
+  //     try {
+  //       const response = await client.get("memberships");
+  //       setMembershipsState(response.data);
+  //       setMemberships(response.data);
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   };
+  //   getCustomers();
+  // }, []);
   const cols = memberships.map((membership) => (
     <MembershipCard data={membership} />
   ));

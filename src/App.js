@@ -1,11 +1,13 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import { RootRouter } from './components/routers/index.js';
-
+import { ChakraProvider } from "@chakra-ui/react";
+import { OwnerContextProvider } from "./context/index.js";
+import { RootRouter } from "./components/routers/index.js";
 
 function App() {
   return (
     <ChakraProvider>
-      <RootRouter />
+      <OwnerContextProvider>
+        <RootRouter />
+      </OwnerContextProvider>
     </ChakraProvider>
   );
 }

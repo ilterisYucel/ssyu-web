@@ -9,7 +9,7 @@ const NonAuthRouter = () => {
         <Route errorElement={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
 
 export default NonAuthRouter;

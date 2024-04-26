@@ -12,22 +12,22 @@ import {
 } from "../../modules/index.js";
 
 const CustomersPage = () => {
-  const [customersState, setCustomersState] = useState([]);
-  const { setCustomers, customers } = useContext(CustomerContext);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const loadCustomers = async () => {
-      try {
-        const response = await client.get("customers");
-        setCustomersState(response.data);
-        setCustomers(response.data);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    loadCustomers();
-  }, []);
+  // const [customersState, setCustomersState] = useState([]);
+  const { customers } = useContext(CustomerContext);
+  // const [error, setError] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(() => {
+  //   const loadCustomers = async () => {
+  //     try {
+  //       const response = await client.get("customers");
+  //       setCustomersState(response.data);
+  //       setCustomers(response.data);
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   };
+  //   loadCustomers();
+  // }, []);
 
   const cols = customers.map((customer) => <CustomerCard data={customer} />);
   const content = cols.length ? <PageContentGrid cols={cols} /> : <NoRecords />;

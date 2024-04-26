@@ -15,7 +15,7 @@ import { useDisclosure } from "@chakra-ui/react";
 
 import { FaSearch } from "react-icons/fa";
 import { FaFilter, FaSort } from "react-icons/fa6";
-import { IoIosRefresh } from "react-icons/io";
+// import { IoIosRefresh } from "react-icons/io";
 
 const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -52,13 +52,13 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
                 </ButtonGroup>
               </InputRightElement>
             </InputGroup>
-            <IconButton
+            {/* <IconButton
               background="transparent"
               icon={<IoIosRefresh size={24} />}
               color="gray.700"
               aria-label="yenile"
               onClick={() => window.location.reload()}
-            />
+            /> */}
           </HStack>
         </Box>
         <Spacer />
