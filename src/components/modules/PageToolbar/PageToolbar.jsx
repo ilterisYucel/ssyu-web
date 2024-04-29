@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  useToast,
   ButtonGroup,
   Flex,
   IconButton,
@@ -15,16 +15,59 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 
 import { FaSearch } from "react-icons/fa";
-import { MdAddBox } from "react-icons/md";
+// import { MdAddBox } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 import { FaFilter, FaSort } from "react-icons/fa6";
-// import { IoIosRefresh } from "react-icons/io";
+import { IoIosRefresh } from "react-icons/io";
+
+import { client } from "../../../utils/requestUtils.js";
+import { useContext } from "react";
+import { CustomerContext, MembershipContext } from "../../../context/index.js";
 
 const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
+  const { setCustomers } = useContext(CustomerContext);
+  const { setMemberships } = useContext(MembershipContext);
+  const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const ModalCompoent = modalComponent;
   const modal = modalComponent && (
     <ModalCompoent isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
   );
+
+  const refreshData = async () => {
+    try {
+      const promises = [client.get("customers"), client.get("memberships")];
+      const responses = await Promise.all(promises);
+      setCustomers(responses[0].data);
+      setMemberships(responses[1].data);
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
+  const refresh = async () => {
+    const successToast = {
+      title: "Veriler Güncellendi",
+      status: "success",
+      duration: 3000,
+    };
+    const failToast = {
+      title: "Veriler Güncellenemedi",
+      description: "Sunucu çalışmıyor olabilir.",
+      status: "error",
+      duration: 3000,
+    };
+    const pendingToast = {
+      title: "Veriler Güncelleniyor...",
+      status: "info",
+      duration: 3000,
+    };
+    toast.promise(refreshData(), {
+      success: successToast,
+      error: failToast,
+      loading: pendingToast,
+    });
+  };
   return (
     <>
       <Flex>
@@ -64,12 +107,24 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
           </HStack>
         </Box>
         <Spacer />
+        <Box marginLeft={4} paddingTop={8} paddingRight={2}>
+          <Tooltip label="Yenile" aria-label="Yenile">
+            <IconButton
+              colorScheme="green"
+              onClick={refresh}
+              icon={<IoIosRefresh />}
+              aria-label="Yenile"
+            >
+              {/* {buttonText} */}
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Box paddingTop={8} paddingRight={8}>
           <Tooltip label={buttonText} aria-label={buttonText}>
             <IconButton
               colorScheme="red"
               onClick={onOpen}
-              icon={<MdAddBox />}
+              icon={<IoMdAdd />}
               aria-label={buttonText}
             >
               {/* {buttonText} */}

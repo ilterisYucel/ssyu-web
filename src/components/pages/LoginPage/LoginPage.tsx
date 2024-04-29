@@ -20,13 +20,13 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const authCallback = async () => {
-    console.log(username, password);
     try {
       const response = await client.post("/auth", {
         username,
         password,
       });
       setOwner(response.data);
+      localStorage.setItem("ssyuOwner", JSON.stringify(response.data));
     } catch (error) {
       console.log(error);
     }

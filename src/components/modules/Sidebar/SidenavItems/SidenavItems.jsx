@@ -7,11 +7,13 @@ import {
   Link,
   Tooltip,
   IconButton,
+  Spacer,
+  VStack,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 
 const SidenavItems = ({ ...props }) => {
-  let { navItems, mode } = props;
+  let { navItems, actionItems, mode } = props;
   mode = mode || "semi";
   const sidebarItemInOverMode = (item, index) => (
     <ListItem key={index}>
@@ -37,6 +39,7 @@ const SidenavItems = ({ ...props }) => {
         <Flex
           as="button"
           alignItems="center"
+          marginBottom={8}
           p={2}
           onClick={item.action}
           _focus={{ bg: "gray.100" }}
@@ -69,19 +72,32 @@ const SidenavItems = ({ ...props }) => {
         ) : (
           <IconButton
             background="transparent"
-            icon={<Icon boxSize="5" as={item.icon} />}
+            icon={<Icon as={item.icon} />}
             onClick={item.action}
           />
         )}
       </Tooltip>
     </ListItem>
   );
+
   return (
-    <List spacing={3}>
-      {mode === "semi"
-        ? navItems.map((item, index) => sidebarItemInSemiMode(item, index))
-        : navItems.map((item, index) => sidebarItemInOverMode(item, index))}
-    </List>
+    <VStack>
+      <List spacing={3}>
+        {mode === "semi"
+          ? navItems.map((item, index) => sidebarItemInSemiMode(item, index))
+          : navItems.map((item, index) => sidebarItemInOverMode(item, index))}
+      </List>
+      <Spacer />
+      <List spacing={3} position="absolute" bottom={4}>
+        {mode === "semi"
+          ? actionItems?.map((item, index) =>
+              sidebarItemInSemiMode(item, index)
+            )
+          : actionItems?.map((item, index) =>
+              sidebarItemInOverMode(item, index)
+            )}
+      </List>
+    </VStack>
   );
 };
 

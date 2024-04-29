@@ -16,7 +16,7 @@ import { SiWwise } from "react-icons/si";
 import { SidenavProvider, useSidenav } from "../SidenavContext/index.js";
 import SidenavItems from "../SidenavItems/index.js";
 
-export default function Sidenav({ navItems }) {
+export default function Sidenav({ navItems, actionItems }) {
   const { onOpen, isOpen, onClose } = useSidenav();
 
   return (
@@ -36,7 +36,7 @@ export default function Sidenav({ navItems }) {
 
         <VStack spacing="5" as="nav" display={{ base: "none", md: "flex" }}>
           <Icon as={SiWwise} boxSize={8} />
-          <SidenavItems navItems={navItems} />
+          <SidenavItems navItems={navItems} actionItems={actionItems} />
         </VStack>
         <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
@@ -44,7 +44,11 @@ export default function Sidenav({ navItems }) {
             <DrawerCloseButton />
             <DrawerHeader>SSYU</DrawerHeader>
             <DrawerBody>
-              <SidenavItems navItems={navItems} mode="over" />
+              <SidenavItems
+                navItems={navItems}
+                actionItems={actionItems}
+                mode="over"
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

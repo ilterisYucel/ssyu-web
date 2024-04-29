@@ -5,7 +5,8 @@ import { BsBarChart } from "react-icons/bs";
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { PiPersonSimpleBold } from "react-icons/pi";
 import { LiaFileContractSolid } from "react-icons/lia";
-import { CiLogout } from "react-icons/ci";
+import { MdLogout } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 import { Sidenav } from "../../modules/index.js";
 import { SidenavProvider } from "../../modules/index.js";
@@ -14,6 +15,7 @@ export default function AuthLayout({ toolbar = null, children }) {
   const { resetOwner } = useContext(OwnerContext);
   const navigate = useNavigate();
   const logout = () => {
+    localStorage.removeItem("ssyuOwner");
     resetOwner();
     navigate("/");
   };
@@ -21,7 +23,10 @@ export default function AuthLayout({ toolbar = null, children }) {
     { icon: BsBarChart, label: "Panel", to: "/" },
     { icon: PiPersonSimpleBold, label: "Müşteriler", to: "/customers" },
     { icon: LiaFileContractSolid, label: "Üyelikler", to: "/memberships" },
-    { icon: CiLogout, label: "Çıkış", action: logout },
+  ];
+  const actionItems = [
+    { icon: MdLogout, label: "Çıkış", action: logout },
+    { icon: FaUser, label: "Kullanıcı", action: () => console.log() },
   ];
   return (
     <Grid
@@ -41,7 +46,7 @@ export default function AuthLayout({ toolbar = null, children }) {
             paddingLeft={{ base: 2, md: 0 }}
             height="100vh"
           >
-            <Sidenav navItems={navItems} />
+            <Sidenav navItems={navItems} actionItems={actionItems} />
           </Box>
         </GridItem>
         <GridItem area="main" w="full">
