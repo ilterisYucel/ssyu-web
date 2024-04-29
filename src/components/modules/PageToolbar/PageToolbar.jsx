@@ -10,10 +10,12 @@ import {
   InputRightElement,
   Spacer,
   HStack,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
 import { FaSearch } from "react-icons/fa";
+import { MdAddBox } from "react-icons/md";
 import { FaFilter, FaSort } from "react-icons/fa6";
 // import { IoIosRefresh } from "react-icons/io";
 
@@ -26,7 +28,7 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
   return (
     <>
       <Flex>
-        <Box paddingTop={8} paddingLeft={4} width="66%">
+        <Box paddingTop={8} paddingLeft={4} width="80%">
           <HStack>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
@@ -62,10 +64,17 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
           </HStack>
         </Box>
         <Spacer />
-        <Box paddingTop={8} paddingRight={4}>
-          <Button colorScheme="red" onClick={onOpen}>
-            {buttonText}
-          </Button>
+        <Box paddingTop={8} paddingRight={8}>
+          <Tooltip label={buttonText} aria-label={buttonText}>
+            <IconButton
+              colorScheme="red"
+              onClick={onOpen}
+              icon={<MdAddBox />}
+              aria-label={buttonText}
+            >
+              {/* {buttonText} */}
+            </IconButton>
+          </Tooltip>
         </Box>
       </Flex>
       {modal && modal}

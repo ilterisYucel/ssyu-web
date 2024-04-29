@@ -6,51 +6,73 @@ import {
   Text,
   Link,
   Tooltip,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
 import { NavLink } from "react-router-dom";
 
-const SidenavItems = ({...props}) => {
+const SidenavItems = ({ ...props }) => {
   let { navItems, mode } = props;
-  mode = mode || 'semi';
+  mode = mode || "semi";
   const sidebarItemInOverMode = (item, index) => (
     <ListItem key={index}>
-      <Link
-        display="block"
-        as={NavLink}
-        to={item.to}
-        _focus={{ bg: "gray.100" }}
-        _hover={{
-          bg: "gray.200"
-        }}
-        _activeLink={{ bg: "white", color: "black" }}
-        w="full"
-        borderRadius="md"
-      >
-        <Flex alignItems="center" p={2}>
+      {item.to ? (
+        <Link
+          display="block"
+          as={NavLink}
+          to={item.to}
+          _focus={{ bg: "gray.100" }}
+          _hover={{
+            bg: "gray.200",
+          }}
+          _activeLink={{ bg: "white", color: "black" }}
+          w="full"
+          borderRadius="md"
+        >
+          <Flex alignItems="center" p={2}>
+            <Icon boxSize="5" as={item.icon} />
+            <Text ml={2}>{item.label}</Text>
+          </Flex>
+        </Link>
+      ) : (
+        <Flex
+          as="button"
+          alignItems="center"
+          p={2}
+          onClick={item.action}
+          _focus={{ bg: "gray.100" }}
+          _hover={{
+            bg: "gray.200",
+          }}
+          w="full"
+        >
           <Icon boxSize="5" as={item.icon} />
           <Text ml={2}>{item.label}</Text>
         </Flex>
-      </Link>
+      )}
     </ListItem>
   );
-  const sidebarItemInSemiMode = (
-    { icon: Icon, ...item },
-    index
-  ) => (
+  const sidebarItemInSemiMode = ({ icon: Icon, ...item }, index) => (
     <ListItem key={index}>
       <Tooltip label={item.label} placement="right">
-        <IconButton
-          key={index}
-          as={NavLink}
-          _focus={{ bg: "gray.100" }}
-          _activeLink={{ boxShadow: "md", bg: "blue.500", color: "white" }}
-          bg="transparent"
-          aria-label={item.label}
-          borderRadius="xl"
-          icon={<Icon />}
-          to={item.to}
-        />
+        {item.to ? (
+          <IconButton
+            key={index}
+            as={NavLink}
+            _focus={{ bg: "gray.100" }}
+            _activeLink={{ boxShadow: "md", bg: "blue.500", color: "white" }}
+            bg="transparent"
+            aria-label={item.label}
+            borderRadius="xl"
+            icon={<Icon />}
+            to={item.to}
+          />
+        ) : (
+          <IconButton
+            background="transparent"
+            icon={<Icon boxSize="5" as={item.icon} />}
+            onClick={item.action}
+          />
+        )}
       </Tooltip>
     </ListItem>
   );
@@ -61,6 +83,6 @@ const SidenavItems = ({...props}) => {
         : navItems.map((item, index) => sidebarItemInOverMode(item, index))}
     </List>
   );
-}
+};
 
 export default SidenavItems;

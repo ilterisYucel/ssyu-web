@@ -11,7 +11,7 @@ import NoRecords from "./NoRecords/index.js";
 import AddorUpdateCustomerModal from "./AddorUpdateCustomerModal/index.js";
 import PageContentGrid from "./PageContentGrid/index.js";
 import AddorUpdateMembershipModal from "./AddorUpdateMembershipModal/index.js";
-
+import AuthHeader from "./AuthHeader/index.js";
 export {
   SidenavItems,
   Sidenav,
@@ -24,4 +24,5 @@ export {
   AddorUpdateCustomerModal,
   PageContentGrid,
   AddorUpdateMembershipModal,
+  AuthHeader,
 };

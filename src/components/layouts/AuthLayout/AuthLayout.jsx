@@ -1,16 +1,27 @@
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+
 import { BsBarChart } from "react-icons/bs";
-import { Box, Button, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { PiPersonSimpleBold } from "react-icons/pi";
 import { LiaFileContractSolid } from "react-icons/lia";
+import { CiLogout } from "react-icons/ci";
 import { Outlet } from "react-router-dom";
 import { Sidenav } from "../../modules/index.js";
 import { SidenavProvider } from "../../modules/index.js";
-
+import { OwnerContext } from "../../../context/index.js";
 export default function AuthLayout({ toolbar = null, children }) {
+  const { resetOwner } = useContext(OwnerContext);
+  const navigate = useNavigate();
+  const logout = () => {
+    resetOwner();
+    navigate("/");
+  };
   const navItems = [
     { icon: BsBarChart, label: "Panel", to: "/" },
     { icon: PiPersonSimpleBold, label: "Müşteriler", to: "/customers" },
     { icon: LiaFileContractSolid, label: "Üyelikler", to: "/memberships" },
+    { icon: CiLogout, label: "Çıkış", action: logout },
   ];
   return (
     <Grid

@@ -17,7 +17,7 @@ const ownerContextWrapper = (component) => ({
   resetOwner: () => {
     initialOwnerContext.id = "";
     initialOwnerContext.username = "";
-    component?.setState({ context: initialOwnerContext(component) });
+    component?.setState({ context: ownerContextWrapper(component) });
   },
 });
 

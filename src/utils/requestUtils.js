@@ -1,7 +1,7 @@
 import axios from "axios";
 // https://3.70.166.110:3000
 const client = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: "https://tyazilimssyu.com:3000/",
   timeout: 3000,
   headers: {
     Accept: "application/json",
