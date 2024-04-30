@@ -24,15 +24,54 @@ import { client } from "../../../utils/requestUtils.js";
 import { useContext } from "react";
 import { CustomerContext, MembershipContext } from "../../../context/index.js";
 
-const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
+const PageToolbar = ({
+  inputPlaceholder,
+  tooltipText,
+  setSearchValue,
+  setSortValue,
+  setFilterValue,
+  modalComponent,
+  filterModalComponent,
+}) => {
   const { setCustomers } = useContext(CustomerContext);
   const { setMemberships } = useContext(MembershipContext);
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: filterIsOpen,
+    onClose: filterOnClose,
+    onOpen: filterOnOpen,
+  } = useDisclosure();
   const ModalCompoent = modalComponent;
+  const FilterModalComponent = filterModalComponent;
   const modal = modalComponent && (
     <ModalCompoent isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
   );
+  const filterModal = filterModalComponent && (
+    <FilterModalComponent
+      setFilterValue={setFilterValue}
+      isOpen={filterIsOpen}
+      onClose={filterOnClose}
+      onOpen={filterOnOpen}
+    />
+  );
+  const searchData = (event) => {
+    if (!event.target.value) {
+      setSearchValue("");
+      return;
+    }
+    setSearchValue(event.target.value);
+  };
+  const debounce = (callback, waitTime) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(...args);
+      }, waitTime);
+    };
+  };
+  const searchBarHandler = debounce(searchData, 1000);
 
   const refreshData = async () => {
     try {
@@ -77,7 +116,11 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
               <InputLeftElement pointerEvents="none">
                 <FaSearch color="gray.300" />
               </InputLeftElement>
-              <Input paddingRight={24} placeholder={inputPlaceholder} />
+              <Input
+                paddingRight={24}
+                placeholder={inputPlaceholder}
+                onInput={(event) => searchBarHandler(event)}
+              />
               <InputRightElement>
                 <ButtonGroup spacing="1" marginRight={16}>
                   <IconButton
@@ -85,7 +128,7 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
                     icon={<FaFilter />}
                     color="gray.700"
                     aria-label="filtrele"
-                    onClick={() => console.log("OK")}
+                    onClick={filterOnOpen}
                   />
                   <IconButton
                     background="transparent"
@@ -120,12 +163,12 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
           </Tooltip>
         </Box>
         <Box paddingTop={8} paddingRight={8}>
-          <Tooltip label={buttonText} aria-label={buttonText}>
+          <Tooltip label={tooltipText} aria-label={tooltipText}>
             <IconButton
               colorScheme="red"
               onClick={onOpen}
               icon={<IoMdAdd />}
-              aria-label={buttonText}
+              aria-label={tooltipText}
             >
               {/* {buttonText} */}
             </IconButton>
@@ -133,6 +176,7 @@ const PageToolbar = ({ inputPlaceholder, buttonText, modalComponent }) => {
         </Box>
       </Flex>
       {modal && modal}
+      {filterModal && filterModal}
     </>
   );
 };

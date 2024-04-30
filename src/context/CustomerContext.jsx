@@ -1,7 +1,13 @@
 import React from "react";
 
+import { ssyuSort } from "../utils/sortUtils";
+import { isIgnored } from "../utils/valueUtils";
+
 const initialCustomerContext = {
   customers: [],
+  searchKeywords: ["name", "phone", "email"],
+  sortKeywords: ["name", "registrationDate"],
+  filterKeywords: ["gender"],
 };
 
 const customerContextWrapper = (component) => ({
@@ -10,7 +16,37 @@ const customerContextWrapper = (component) => ({
     initialCustomerContext.customers = data;
     component?.setState({ context: customerContextWrapper(component) });
   },
-  getCustomers: () => initialCustomerContext.customers,
+  // TODO implement more generic function
+  getCustomers: (
+    searchValue = "",
+    sortValue = { name: null, registrationDate: null },
+    filterValue = { gender: null }
+  ) => {
+    console.log(filterValue);
+    let result = initialCustomerContext.customers.filter((customer) => {
+      let ret = true;
+      Object.keys(filterValue).forEach((key) => {
+        if (
+          initialCustomerContext.filterKeywords.includes(key) &&
+          !isIgnored(filterValue[key])
+        ) {
+          ret = customer[key] === filterValue[key];
+          console.log("asdsada");
+        }
+      });
+      return ret;
+    });
+    result = result.filter((customer) => {
+      return initialCustomerContext.searchKeywords.some((val) =>
+        customer[val].toLowerCase().includes(searchValue.toLowerCase())
+      );
+    });
+    Object.keys(sortValue).forEach((key) => {
+      if (initialCustomerContext.sortKeywords.includes(key) && sortValue[key])
+        result = ssyuSort(result, key, sortValue[key]);
+    });
+    return [...result];
+  },
   resetCustomers: () => {
     initialCustomerContext.customers = [];
     component?.setState({ context: customerContextWrapper(component) });

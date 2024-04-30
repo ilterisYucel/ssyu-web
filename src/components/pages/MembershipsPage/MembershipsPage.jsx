@@ -5,37 +5,42 @@ import { client } from "../../../utils/requestUtils.js";
 import {
   AddorUpdateMembershipModal,
   MembershipCard,
+  MembershipFilterModal,
   NoRecords,
 } from "../../modules/index.js";
 import PageContentGrid from "../../modules/PageContentGrid/index.js";
 import { PageToolbar } from "../../modules/index.js";
+import { CustomerContext } from "../../../context/CustomerContext.jsx";
 
 const MembershipsPage = () => {
-  // const [membershipsState, setMembershipsState] = useState([]);
-  const { memberships } = useContext(MembershipContext);
-  // const [error, setError] = useState(null);
-  // const [isLoading, setIsLoading] = useState(true);
-  // useEffect(() => {
-  //   const getCustomers = async () => {
-  //     try {
-  //       const response = await client.get("memberships");
-  //       setMembershipsState(response.data);
-  //       setMemberships(response.data);
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //   };
-  //   getCustomers();
-  // }, []);
-  const cols = memberships.map((membership) => (
-    <MembershipCard data={membership} />
-  ));
+  const [membershipSearchValue, setMembershipSearchValue] = useState("");
+  const [membershipSortValue, setMembershipSortValue] = useState({
+    baginDate: null,
+    endDate: null,
+  });
+  const [membershipFilteValue, setMemberShipFilterValue] = useState({
+    payment: null,
+    active: null,
+  });
+  const { getMemberships } = useContext(MembershipContext);
+  const { customers } = useContext(CustomerContext);
+
+  const cols = getMemberships(
+    membershipSearchValue,
+    customers,
+    membershipSortValue,
+    membershipFilteValue
+  ).map((membership) => <MembershipCard data={membership} />);
   const content = cols.length ? <PageContentGrid cols={cols} /> : <NoRecords />;
   const toolbar = (
     <PageToolbar
       inputPlaceholder="Üyelik Ara"
-      buttonText={"Üyelik Ekle"}
+      tooltipText={"Üyelik Ekle"}
+      setSearchValue={setMembershipSearchValue}
+      setSortValue={setMembershipSortValue}
+      setFilterValue={setMemberShipFilterValue}
       modalComponent={AddorUpdateMembershipModal}
+      filterModalComponent={MembershipFilterModal}
     />
   );
   return <AuthLayout toolbar={toolbar} children={content}></AuthLayout>;

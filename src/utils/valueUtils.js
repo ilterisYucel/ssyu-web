@@ -28,6 +28,17 @@ const isFalse = (value) => {
   }
 };
 
+const isIgnored = (value) => {
+  switch (value) {
+    case undefined:
+    case null:
+    case "":
+      return true;
+    default:
+      return false;
+  }
+};
+
 const compareBoolableValues = (value, value1) => {
   return (
     (isFalse(value) && isFalse(value1)) || (isTrue(value) && isTrue(value1))
@@ -71,4 +82,5 @@ export {
   formatDate,
   dateFormat,
   dateAddition,
+  isIgnored,
 };

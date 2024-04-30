@@ -12,6 +12,8 @@ import AddorUpdateCustomerModal from "./AddorUpdateCustomerModal/index.js";
 import PageContentGrid from "./PageContentGrid/index.js";
 import AddorUpdateMembershipModal from "./AddorUpdateMembershipModal/index.js";
 import AuthHeader from "./AuthHeader/index.js";
+import CustomerFilterModal from "./CustomerFilterModal/index.js";
+import MembershipFilterModal from "./MembershipFilterModal/index.js";
 export {
   SidenavItems,
   Sidenav,
@@ -25,4 +27,6 @@ export {
   PageContentGrid,
   AddorUpdateMembershipModal,
   AuthHeader,
+  CustomerFilterModal,
+  MembershipFilterModal,
 };
